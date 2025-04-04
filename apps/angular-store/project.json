@@ -87,6 +87,19 @@
         "port": 4200,
         "spa": true
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "configurations": {
+          "staging": {
+            "commands": [
+              "aws s3 sync dist/apps/angular-store s3://angular-monorepo-deploy --exclude \"*.map\" --delete"
+            ]
+          }
+        }
+      }
     }
   }
 }
