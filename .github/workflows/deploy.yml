@@ -53,5 +53,9 @@ jobs:
       - name: Deploying ${{ github.event.inputs.projects }} to ${{ github.event.inputs.environment }}
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
+          ANGULAR_STORE_STAGING_BUCKET: ${{ vars.ANGULAR_STORE_STAGING_BUCKET }}
+          ANGULAR_STORE_PROD_BUCKET: ${{ vars.ANGULAR_STORE_PROD_BUCKET }}
+          ANGULAR_STORE_STAGING_CLOUDFRONT_ID: ${{ secrets.ANGULAR_STORE_STAGING_CLOUDFRONT_ID }}
+          ANGULAR_STORE_PROD_CLOUDFRONT_ID: ${{ secrets.ANGULAR_STORE_PROD_CLOUDFRONT_ID }}
         run: |
           npx nx run-many --target=deploy --projects=${{ github.event.inputs.projects }} --configuration=${{ github.event.inputs.environment }}

@@ -48,6 +48,12 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
+        },
+        "staging": {
+          "fileReplacements": [{
+            "replace": "apps/angular-store/src/environments/environment.ts",
+            "with": "apps/angular-store/src/environments/environment.staging.ts"
+          }]
         }
       },
       "defaultConfiguration": "production"
@@ -91,13 +97,14 @@
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "parallel": false,
-        "configurations": {
-          "staging": {
-            "commands": [
-              "aws s3 sync dist/apps/angular-store s3://angular-monorepo-deploy --exclude \"*.map\" --delete"
-            ]
-          }
+        "parallel": false
+      },
+      "configurations": {
+        "staging": {
+          "commands": [
+            "aws s3 sync dist/apps/angular-store s3://$ANGULAR_STORE_STAGING_BUCKET --exclude='*.map' --delete",
+            "aws cloudfront create-invalidation --distribution-id=$ANGULAR_STORE_STAGING_CLOUDFRONT_ID --paths='/*'"
+          ]
         }
       }
     }
